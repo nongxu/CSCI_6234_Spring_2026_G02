@@ -20,7 +20,7 @@ customer --> login
 customer --> browse
 customer --> addcart
 
-restaurant --> browse : provides menu
+Restaurant -- (Browse Restaurants)
 
 ' Actor Descriptions
 ' Customer
