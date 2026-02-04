@@ -1,0 +1,100 @@
+@startuml
+
+' Define Actors
+:Customer: as customer
+:Restaurant: as restaurant
+
+' Define System Boundary
+rectangle "OnlineOrder System"{
+    (Sign Up) as signup
+    (Log in) as login
+    (Browse Restaurant) as browse
+    (Add to Cart) as addcart
+    (Checkout Order) as checkout
+}
+
+' Actor - Use Case Associations
+customer --> checkout
+customer --> signup
+customer --> login
+customer --> browse
+customer --> addcart
+
+restaurant --> browse : provides menu
+
+' Actor Descriptions
+' Customer
+note right of customer
+**Customer**
+The Customer is the primary user of the OnlineOrder system.
+Customers can create accounts, browse available restaurants
+and their menus, add food items to their shopping cart, and
+complete orders through the checkout process. Customers must
+be authenticated to access cart and checkout features.
+end note
+
+' Restaurant
+note left of restaurant
+**Restaurant**
+The Restaurant is a secondary actor that provides menu data
+to the system. Restaurants supply information about available
+dishes including names, descriptions, prices and images.
+The restaurant receives order notification when customers
+complete their purchases.
+end note
+
+' Sign Up
+note bottom of signup
+**Sign Up**
+Allows new users to create an account in the system by
+providing their email, password, first name and last name.
+The system validates the email format, ensures the email
+in unique, and securely stores the encryted password.
+Upon successful registration, the user can login to access
+full system feature.
+end note
+
+' Login
+note bottom of login
+**Login**
+Enables registered users to autheticate themselves using
+their email and password credentials. The system validates
+the credentials against stored user data and creates a 
+secure session upon successful authetication. This use
+case is prerequisite for accessing protected features like
+cart full system features.
+end note
+
+' Browse Restaurants
+note bottom of browse
+**Browse Restaurants**
+Allows customers to view all available restaurants in the
+system with detailed information including name, address,
+phone number and restaurant images. Customers can select
+a restaurant to view its complete menu with dish detials,
+prices, descriptions and photos. This helps customers
+discover and compare food options.
+end note
+
+' Add to Cart
+note bottom of addcart
+**Add to Cart**
+Enables authenticated customers to add selected menu items
+to their personal shopping cart. The system validates the
+menu item, associates it with the customer's cart, tracks
+quantity and automatically calculates the total price.
+Customers can add multiple items from different restaurants
+to build their complete order.
+end note
+
+' Checkout Order
+note bottom of checkout
+**Checkout Order**
+Allows customers to review their cart contents and complete
+the order placement. The system displays the final order
+summary with total price, processes the checkout request,
+and clears the cart upon successful completion. This 
+represents the final step in the food ordering process.
+end note
+
+@enduml
