@@ -1,0 +1,23 @@
+@startuml
+title Login
+
+actor Customer
+
+' Boundary Object
+boundary "Login Form" as loginForm 
+
+' Control Object
+control "Authentication Controller" as authControl
+
+' Entity Object
+entity "Customer" as customerEntity
+
+' Flow
+Customer -> loginForm : provide credentials
+loginForm -> authControl : authenticate user
+authControl -> customerEntity : retrieve customer
+customerEntity -> authControl : customer data
+authControl -> loginForm : authentication result
+loginForm -> Customer : grant/deny access
+
+@enduml

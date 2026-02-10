@@ -1,0 +1,23 @@
+@startuml
+title Sign Up
+
+actor Customer
+
+' Boundary Objects
+boundary "Sign Up Form" as signupform
+
+' Control Objects
+control "Registration Controller" as controller
+
+' Entity Objects
+entity "Customer" as customerEntity
+
+' Flow
+Customer -> signupform : provide registration information
+signupform -> controller : submit registration
+controller -> customerEntity : validate and create customer
+customerEntity -> controller : customer created
+controller -> signupform : registration result
+signupform -> Customer : display confirmation
+
+@enduml

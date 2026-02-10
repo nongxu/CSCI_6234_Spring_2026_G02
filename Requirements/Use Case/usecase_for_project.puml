@@ -21,6 +21,8 @@ customer -- browse
 customer -- addcart
 
 restaurant -- browse
+addcart .> login : <<include>>
+checkout .> login : <<include>>
 
 ' Actor Descriptions
 ' Customer
@@ -49,20 +51,20 @@ note bottom of signup
 Allows new users to create an account in the system by
 providing their email, password, first name and last name.
 The system validates the email format, ensures the email
-in unique, and securely stores the encryted password.
+is unique, and securely stores the encrypted password.
 Upon successful registration, the user can login to access
-full system feature.
+full system features.
 end note
 
 ' Login
 note bottom of login
 **Login**
-Enables registered users to autheticate themselves using
+Enables registered users to authenticate themselves using
 their email and password credentials. The system validates
 the credentials against stored user data and creates a 
-secure session upon successful authetication. This use
-case is prerequisite for accessing protected features like
-cart full system features.
+secure session upon successful authentication. This use
+case is a prerequisite for accessing protected features like
+cart management and checkout.
 end note
 
 ' Browse Restaurants
@@ -71,7 +73,7 @@ note bottom of browse
 Allows customers to view all available restaurants in the
 system with detailed information including name, address,
 phone number and restaurant images. Customers can select
-a restaurant to view its complete menu with dish detials,
+a restaurant to view its complete menu with dish details,
 prices, descriptions and photos. This helps customers
 discover and compare food options.
 end note
@@ -84,7 +86,8 @@ to their personal shopping cart. The system validates the
 menu item, associates it with the customer's cart, tracks
 quantity and automatically calculates the total price.
 Customers can add multiple items from different restaurants
-to build their complete order.
+to build their complete order. This use case includes the
+Login use case as authentication is required.
 end note
 
 ' Checkout Order
@@ -95,6 +98,8 @@ the order placement. The system displays the final order
 summary with total price, processes the checkout request,
 and clears the cart upon successful completion. This 
 represents the final step in the food ordering process.
+This use case includes the Login use case as authentication
+is required to complete the checkout.
 end note
 
 @enduml

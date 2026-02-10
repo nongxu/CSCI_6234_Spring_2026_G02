@@ -1,0 +1,34 @@
+@startuml
+title Add to Cart
+
+actor Customer
+
+' Boundary Object
+boundary "Menu Display" as menuDisplay
+
+' Control Object
+control "Authetication Controller" as authCtrl
+control "Cart Controller" as cartCtrl
+
+' Entity Object
+entity "Customer" as customerEntity
+entity "Cart" as cart
+entity "MenuItem" as menuItem
+
+' Flow - Authentication
+Customer -> menuDisplay : select item
+menuDisplay -> authCtrl : verify user
+authCtrl -> customerEntity : check authentication
+customerEntity -> authCtrl : authenticated
+authCtrl -> menuDisplay : proceed
+
+' Flow - Add to Cart
+menuDisplay -> cartCtrl : add item to cart
+cartCtrl -> menuItem : get item details
+menuItem -> cartCtrl : item data
+cartCtrl -> cart : update cart
+cart -> cartCtrl : cart updated
+cartCtrl -> menuDisplay : update display
+menuDisplay -> Customer : show updated cart
+
+@enduml
