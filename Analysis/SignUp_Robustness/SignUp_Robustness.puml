@@ -1,4 +1,6 @@
 @startuml
+left to right direction
+
 title Sign Up
 
 actor Customer
@@ -10,14 +12,28 @@ boundary "Sign Up Form" as signupform
 control "Registration Controller" as controller
 
 ' Entity Objects
-entity "Customer" as customerEntity
+entity "Customer Data" as customerEntity
 
-' Flow
-Customer -> signupform : provide registration information
-signupform -> controller : submit registration
-controller -> customerEntity : validate and create customer
-customerEntity -> controller : customer created
-controller -> signupform : registration result
-signupform -> Customer : display confirmation
+' Relationships
+Customer -- signupform : interacts with
+signupform -- controller : submits data to
+controller -- customerEntity : validates and creates
+
+note bottom of signupform
+    User interface for 
+    collection registration 
+    information
+end note
+
+note bottom of controller
+    Handles registration logic,
+    validates data and creates
+    new customer accounts
+end note
+
+note bottom of customerEntity
+    Stores customer
+    information persistently
+end note
 
 @enduml

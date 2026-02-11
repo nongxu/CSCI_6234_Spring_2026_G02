@@ -1,4 +1,6 @@
 @startuml
+left to right direction
+
 title Checkout Order
 
 actor Customer
@@ -11,27 +13,34 @@ control "Authentication Controller" as authCtrl
 control "Checkout Controller" as checkoutCtrl
 
 ' Entity Object
-entity "Customer" as customerEntity
-entity "Cart" as cart
+entity "Customer Data" as customerEntity
+entity "Cart Data" as cart
 
-' Flow - Authentication
-Customer -> checkoutUI : initiate checkout
-checkoutUI -> authCtrl : verify user
-authCtrl -> customerEntity : check authentication
-customerEntity -> authCtrl : authenticated
-authCtrl -> checkoutUI : proceed
+' Relationships
+Customer -- checkoutUI : initiates checkout through
+checkoutUI -- authCtrl : verifies through
+checkoutUI -- checkoutCtrl : processes through
+authCtrl -- customerEntity : authenticates against
+checkoutCtrl -- cart : finalizes
 
-' Flow - Checkout
-checkoutUI -> checkoutCtrl : request cart contents
-checkoutCtrl -> cart : retrieve cart
-cart -> checkoutCtrl : cart data
-checkoutCtrl -> checkoutUI : display order summary
-checkoutUI -> Customer : show summary
-Customer -> checkoutUI : confirm order
-checkoutUI ->checkoutCtrl : process checkout
-checkoutCtrl -> cart : finalize order
-cart -> checkoutCtrl : order completed
-checkoutCtrl -> checkoutUI : confirmation
-checkoutUI -> Customer : show confirmation
+note bottom of checkoutUI
+    Interface for reviewing
+    and confirming orders
+end note
+
+note bottom of authCtrl
+    Verifies user is 
+    logged in (included)
+end note
+
+note bottom of checkoutCtrl
+    Handles checkout logic
+    and order finalization
+end note
+
+note bottom of cart
+    Contains order items
+    to be checked out
+end note
 
 @enduml

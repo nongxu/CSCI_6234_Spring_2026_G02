@@ -1,4 +1,6 @@
 @startuml
+left to right direction
+
 title Add to Cart
 
 actor Customer
@@ -11,24 +13,36 @@ control "Authetication Controller" as authCtrl
 control "Cart Controller" as cartCtrl
 
 ' Entity Object
-entity "Customer" as customerEntity
-entity "Cart" as cart
-entity "MenuItem" as menuItem
+entity "Customer Data" as customerEntity
+entity "Cart Data" as cart
+entity "MenuItem Data" as menuItem
 
-' Flow - Authentication
-Customer -> menuDisplay : select item
-menuDisplay -> authCtrl : verify user
-authCtrl -> customerEntity : check authentication
-customerEntity -> authCtrl : authenticated
-authCtrl -> menuDisplay : proceed
+' Relationships
+Customer -- menuDisplay : select item from
+menuDisplay -- authCtrl : verifies through
+menuDisplay -- cartCtrl : sends selections to
+authCtrl -- customerEntity : authentication against
+cartCtrl -- cart : updates
+cartCtrl -- menuItem : retrieve from
 
-' Flow - Add to Cart
-menuDisplay -> cartCtrl : add item to cart
-cartCtrl -> menuItem : get item details
-menuItem -> cartCtrl : item data
-cartCtrl -> cart : update cart
-cart -> cartCtrl : cart updated
-cartCtrl -> menuDisplay : update display
-menuDisplay -> Customer : show updated cart
+note bottom of menuDisplay
+    Interface for selecting
+    and adding menu items
+end note
+
+note bottom of authCtrl
+    Verifies user is
+    logged in (included)
+end note
+
+note bottom of cartCtrl
+    Manages cart operations
+    and updates
+end note
+
+note bottom of cart
+    Stroes user's
+    selected items
+end note
 
 @enduml

@@ -1,4 +1,6 @@
 @startuml
+left to right direction
+
 title Login
 
 actor Customer
@@ -10,14 +12,26 @@ boundary "Login Form" as loginForm
 control "Authentication Controller" as authControl
 
 ' Entity Object
-entity "Customer" as customerEntity
+entity "Customer Data" as customerEntity
 
-' Flow
-Customer -> loginForm : provide credentials
-loginForm -> authControl : authenticate user
-authControl -> customerEntity : retrieve customer
-customerEntity -> authControl : customer data
-authControl -> loginForm : authentication result
-loginForm -> Customer : grant/deny access
+' Relationships
+Customer -- loginForm : interacts with
+loginForm -- authControl : submits credentials to
+authControl -- customerEntity : authenticates against
+
+note bottom of loginForm
+    User interface for
+    entering login credentials
+end note
+
+note bottom of authControl
+    Validates credentials and
+    manages user sessions
+end note
+
+note bottom of customerEntity
+    Stores user credentials
+    and account information
+end note
 
 @enduml

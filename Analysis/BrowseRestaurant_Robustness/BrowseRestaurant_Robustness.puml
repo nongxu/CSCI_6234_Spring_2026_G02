@@ -1,31 +1,48 @@
 @startuml
+left to right direction
+
 title Browse Restaurant
 
 actor Customer
 
 ' Boundary Object
-boundary "Restaurant Browser" as browser
+boundary "Restaurant List Page" as restaurantList
+boundary "Menu Page" as menuPage
 
 ' Control Object
 control "Restaurant Controller" as restaurantCtrol
 control "Menu Controller" as menuCtrl
 
 ' Entity Object
-entity "Restaurant" as restaurant
-entity "MenuItem" as menuItem
+entity "Restaurant Data" as restaurant
+entity "MenuItem Data" as menuItem
 
-' Flow
-Customer -> browser : request restaurants
-browser -> restaurantCtrol : get restaurants
-restaurantCtrol -> restaurant : retrieve restaurant list
-restaurant -> restaurantCtrol : restaurant data
-restaurantCtrol -> browser : display restaurants
-browser -> Customer : show restaurants
-Customer -> browser : select restaurant
-browser -> menuCtrl : get menu
-menuCtrl -> menuItem : retrieve menu items
-menuItem -> menuCtrl : menu data
-menuCtrl -> browser : display menu
-browser -> Customer : show menu 
+' Relationships
+Customer -- restaurantList : browses
+Customer -- menuPage : views
+restaurantList -- restaurantCtrol : requests data from
+menuPage -- menuCtrl : requests data from
+restaurantCtrol -- restaurant : retrieves from
+menuCtrl -- menuItem : retrieves from
+
+note bottom of restaurantList
+    Displays list of 
+    available restaurants
+end note
+
+note bottom of menuPage
+    Displays menu items
+    for selected restaurant
+end note
+
+note bottom of restaurantCtrol
+    Manages restaurant
+    data retrieval
+end note
+
+note bottom of menuCtrl
+    Manages menu
+    data retrieval
+end note
 
 @enduml
