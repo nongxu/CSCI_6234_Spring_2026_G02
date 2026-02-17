@@ -2,7 +2,7 @@
 
 ' Define Actors
 :Customer: as customer
-:Restaurant: as restaurant
+:Restaurant Owner: as restaurantOwner
 
 ' Define System Boundary
 rectangle "OnlineOrder System"{
@@ -11,18 +11,21 @@ rectangle "OnlineOrder System"{
     (Browse Restaurant) as browse
     (Add to Cart) as addcart
     (Checkout Order) as checkout
+    (Register Restaurant) as registerRestaurant
 }
 
 ' Actor - Use Case Associations
-customer -- checkout
 customer -- signup
 customer -- login
 customer -- browse
 customer -- addcart
+customer -- checkout
 
-restaurant -- browse
+restaurantOwner -- registerRestaurant
+
 addcart .> login : <<include>>
 checkout .> login : <<include>>
+checkout .> addcart : <<extend>>
 
 ' Actor Descriptions
 ' Customer
@@ -35,14 +38,14 @@ complete orders through the checkout process. Customers must
 be authenticated to access cart and checkout features.
 end note
 
-' Restaurant
-note left of restaurant
-**Restaurant**
-The Restaurant is a secondary actor that provides menu data
-to the system. Restaurants supply information about available
-dishes including names, descriptions, prices and images.
-The restaurant receives order notification when customers
-complete their purchases.
+' Restaurant Owner
+note left of restaurantOwner
+**Restaurant Owner**
+The Restaurant Owner is a secondary actor who registers
+and manages their restaurant's information in the system.
+Owners provide details such as restaurant name, address,
+phone number, and menu items with prices and descriptions,
+making their restaurant available for customers to browse.
 end note
 
 ' Sign Up
@@ -85,21 +88,32 @@ Enables authenticated customers to add selected menu items
 to their personal shopping cart. The system validates the
 menu item, associates it with the customer's cart, tracks
 quantity and automatically calculates the total price.
-Customers can add multiple items from different restaurants
-to build their complete order. This use case includes the
-Login use case as authentication is required.
+Customers can add multiple items to build their complete
+order. This use case includes Login as authentication is 
+required. Checkout Order may extend this use case when
+the customer proceeds to finalize their order.
 end note
 
 ' Checkout Order
 note bottom of checkout
 **Checkout Order**
-Allows customers to review their cart contents and complete
-the order placement. The system displays the final order
-summary with total price, processes the checkout request,
-and clears the cart upon successful completion. This 
-represents the final step in the food ordering process.
-This use case includes the Login use case as authentication
-is required to complete the checkout.
+Allows customers to finalize their order. The system
+displays the order summary with total price, processes
+the checkout request, generates an order confirmation,
+and returns order details to the customer.Customers may 
+arrive here directly (e.g. via "Buy Now" button) or
+after adding items to their cart. This use case extends
+Add to Cart and requires authentication via Login.
+end note
+
+' Register Restaurant
+note bottom of registerRestaurant
+**Register Restaurant**
+Allows restaurant owners to register their establishment
+in the system by providing details such as restaurant name,
+address, phone number, and menu items with descriptions,
+prices, and images. Upon successful registration, the
+restaurant becomes available for customers to browse.
 end note
 
 @enduml

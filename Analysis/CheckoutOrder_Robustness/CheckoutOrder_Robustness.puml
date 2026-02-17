@@ -7,21 +7,33 @@ actor Customer
 
 ' Boundary Object
 boundary "Checkout Interface" as checkoutUI
+boundary "Order Confirmation Page" as confirmationUI
+
+
 
 ' Control Object
 control "Authentication Controller" as authCtrl
 control "Checkout Controller" as checkoutCtrl
 
+
+
 ' Entity Object
 entity "Customer Data" as customerEntity
 entity "Cart Data" as cart
+entity "Order Data" as orderData
+
+Customer -[hidden]right- checkoutUI
+Customer -[hidden]right- confirmationUI
 
 ' Relationships
 Customer -- checkoutUI : initiates checkout through
 checkoutUI -- authCtrl : verifies through
 checkoutUI -- checkoutCtrl : processes through
 authCtrl -- customerEntity : authenticates against
-checkoutCtrl -- cart : finalizes
+checkoutCtrl -- cart : reads and clears
+checkoutCtrl -- orderData : creates
+orderData -- confirmationUI : send information
+confirmationUI -- Customer : displays order confirmation to
 
 note bottom of checkoutUI
     Interface for reviewing
@@ -41,6 +53,18 @@ end note
 note bottom of cart
     Contains order items
     to be checked out
+end note
+
+note bottom of orderData
+    Stores finalized oreder
+    details including items,
+    total price, and status
+end note
+
+note bottom of confirmationUI
+    Displays order summary
+    and confirmation details
+    to the customer
 end note
 
 @enduml

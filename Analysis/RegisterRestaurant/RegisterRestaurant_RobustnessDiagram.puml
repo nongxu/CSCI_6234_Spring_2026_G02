@@ -1,0 +1,49 @@
+@startuml
+left to right direction
+
+title Register Restaurant
+
+actor "Restaurant Owner" as owner
+
+' Boundary Objects
+boundary "Restaurant Registration Form" as registrationForm
+
+' Control Objects
+control "Restaurant Registration Controller" as registrationCtrl
+
+' Entity Objects
+entity "Restaurant Data" as restaurantData
+entity "MenuItem Data" as menuItemData
+
+' Relationships
+owner -- registrationForm : submits restaurant info through
+registrationForm -- registrationCtrl : sends registration data to
+registrationCtrl -- restaurantData : creates
+registrationCtrl -- menuItemData : creates
+
+note bottom of registrationForm
+    Interface for entering
+    restaurant details, menu
+    sections, and menu items
+end note
+
+note bottom of registrationCtrl
+    Validates and processes
+    restaurant registration,
+    creates restaurant, menu,
+    and menu item records
+end note
+
+note bottom of restaurantData
+    Stores restaurant details
+    including name, address,
+    phone number, and image
+end note
+
+note bottom of menuItemData
+    Stores individual dish details
+    including name, description,
+    price, and image
+end note
+
+@enduml

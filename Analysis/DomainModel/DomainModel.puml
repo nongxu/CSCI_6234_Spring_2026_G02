@@ -1,0 +1,80 @@
+@startuml
+left to right direction
+
+title Domain Model
+
+' User hierarchy
+class User{
+    userId : Long
+    email : String
+    password : String
+    firstName : String
+    lastName : String
+}
+
+class Customer {
+    phoneNumber : String
+}
+
+class RestaurantOwner {
+    businessName : String
+}
+
+User <|-- Customer
+User <|-- RestaurantOwner
+
+' Restaurant and Menu
+class Restaurant {
+    restaurantId : Long
+    name : String 
+    address : String 
+    phone : String 
+    image : String 
+}
+
+class MenuItem {
+    menuItemId : Long
+    name : String
+    description : String
+    price : Double
+    image : String 
+}
+
+RestaurantOwner "1" -- "1" Restaurant : owns
+Restaurant "1" *-- "1..*" MenuItem : contians
+
+' Cart
+
+class Cart {
+    cartId : Long
+}
+
+class CartItem {
+    cartItemId : Long
+    quantity : Integer 
+}
+
+Customer "1" -- "1" Cart : has
+Cart "1" *-- "0..*" CartItem : contains
+CartItem "0..*" --> "1" MenuItem : references
+
+' Order
+
+class Order {
+    orderId : Long
+    totalPrice : Double
+    status : String
+    createdAt : DateTime 
+}
+
+class OrderItem {
+    orderItemId : Long 
+    quantity : Integer 
+    price : Double 
+}
+
+Customer "1" -- "0..*" Order : places
+Order "1" *-- "1..*" OrderItem : contains
+OrderItem "0..*" --> "1" MenuItem : references
+
+@enduml

@@ -1,0 +1,6 @@
+The OnlineOrder system domain model centers on two types of users, both inheriting from a base User class that holds shared attributes such as email, password and name. Customer class represents a user who browses and orders food, while the RestaurantOwner class represents a person who manages his or her registered restaurant with a unique business name.
+
+Each RestaurantOwner owns one Restaurant, which contains one or more MenuItems. MenuItems belong exclusively to their Restaurant. Each restaurant maintains its own independent menu with individual dish names, descriptions, prices and images.
+
+Every Customer has a single Cart which holds zero or more CartItems. Each CartItem references a MenuItem and records the selected quantity. This allows customers to build their order before committing to a purchase. Once a customer proceeds to checkout, an Order is created of the Cart, and the Cart is cleared. An Order contains one or more OrderItems, each capturing the MenuItem reference, quantity, and the price at the time of purchase to preserve accurate historical records. A Customer may place multiple Orders over time, reflecting their full purchase history within the system.
+
