@@ -1,0 +1,26 @@
+@startuml
+skinparam dpi 300
+title Login
+
+start
+:Open Login Form;
+note right : Step 1 - Customer opens the Login Form
+:Enter email and password;
+note right : Step 2 - Customer enters email and password
+:Submit credentials;
+note right : Step 3 - Customer submits credentials
+:Validate credentials;
+note right : Step 4 - System validates credentials
+if(Credentials valid?) then (no)
+    :Display error message;
+    note right : Step 5a - System displays error message
+    stop
+else (yes)
+endif
+:Create user seesion;
+note right : Step 5b - System creates user session
+:Redirect to home page;
+note right : Step 6 - Customer is redirected to home page
+stop
+
+@enduml

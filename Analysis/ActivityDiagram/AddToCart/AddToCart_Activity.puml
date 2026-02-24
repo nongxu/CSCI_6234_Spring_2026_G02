@@ -1,0 +1,24 @@
+@startuml
+skinparam dpi 300
+title Add To Cart
+
+start
+:Select menu item;
+note right : Step 1 - Customer selects a menu item
+:Verify login status;
+note right : Step 2 - System verifies that the customer is logged in
+if(User logged in?) then (no)
+    :Redirect to Login Form;
+    note right : Step 3a - Customer is redirected to the Login Form
+    stop
+else (yes)
+endif
+:Add item to cart;
+note right : Step 3b - System adds the selected item to the customer's cart
+:Update cart totoal price;
+note right : Step 4 - System recalculates and updates the cart total price
+:Display updated cart;
+note right : Step 5 - System displays the updated cart to the customer
+stop
+
+@enduml

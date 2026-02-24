@@ -1,0 +1,16 @@
+@startuml
+skinparam dpi 300
+title Browse Restaurant
+
+start
+:Open Restaurant List Page;
+note right: Step 1 - Customer opens the Restaurant List Page
+:View available restaurants;
+note right: Step 2 - System displays all available restaurants\nwith name, address, phone, and image
+:Select a restaurant;
+note right: Step 3 - Customer selects a restaurant
+:View restaurant menu;
+note right: Step 4 - System displays the menu for the selected\nrestaurant with dish name, description, price, and photo
+stop
+
+@enduml

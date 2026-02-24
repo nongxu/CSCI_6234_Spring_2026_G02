@@ -1,0 +1,27 @@
+@startuml
+skinparam dpi 300
+title Sign Up
+
+start
+:Open Sign Up Form;
+note right : Step 1 - Customer opens the Sign Up Form
+:Enter email, password,\n first name and last name;
+note right : Step 2 - Customer enters required registration details
+:Submit registration form;
+note right : Step 3 - Customer submits the registration form
+:Validate registration data;
+note right : Step 4 - System validates registration data
+if (Data valid?) then (no)
+    :Display error message;
+    note right : Step 5a - System displays error message
+    stop
+else (yes)
+endif
+:Create customer account;
+note right : Step 5b - System creates a new customer account
+:Dispaly registration success;
+note right : Step 6 - System notifies customer of successful registration
+stop
+
+
+@enduml

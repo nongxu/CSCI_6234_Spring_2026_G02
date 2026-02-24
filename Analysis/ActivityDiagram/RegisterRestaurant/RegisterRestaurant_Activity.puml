@@ -1,0 +1,30 @@
+@startuml
+skinparam dpi 300
+title Register Restaurant
+
+start
+:Open Restaurant Registration Form;
+note right : Step 1 - Restaurant Owner opens the Registration Form
+:Enter restaurant details \n(name, address, phone, image);
+note right : Step 2 - Owner enters restaurant details
+:Enter menu items \n(name, description, price, image);
+note right : Step 3 - Owner enters menu item details
+:Submit registration form;
+note right : Step 4 - Owner submits the registration form
+:Validate required fields;
+note right : Step 5 - System validates that all required fields are filled in
+if(Field valid?) then (no)
+    :Display error message;
+    note right : Step 6a - System displays error message
+    stop
+else (yes)
+endif
+:Create restaurant record;
+note right : Step 6b - System creates a new restaurant record
+:Create menu item records;
+note right : Step 7 - System creates menu item records for the restaurant
+:Display registration success;
+note right : Step 8 - System notifies owner of successful registration;\nRestaurant is now visible to customers
+stop
+
+@enduml

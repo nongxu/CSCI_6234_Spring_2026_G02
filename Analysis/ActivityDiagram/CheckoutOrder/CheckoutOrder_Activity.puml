@@ -1,0 +1,36 @@
+@startuml
+skinparam dpi 300
+title Checkout Order
+
+start
+:initiate checkout;
+note right : Step 1 - Customer initiates the checkout process
+:Verify login status;
+note right : Step 2 - System verifies that the customer is logged in
+if (User logged in?) then (no)
+    :Redirect to Login Form;
+    note right : Step 3a - Customer is redirected to the Login Form
+    stop
+else (yes)
+endif
+:Check cart contents;
+note right : Step 3b - System checks that the cart is not empty
+if(Cart is empty?) then (yes)
+    :Display "Cart is empty" error;
+    note right : Step 4a - System displays a cart empty error message
+    stop
+else (no)
+endif
+:Display order summary;
+note right : Step 4b - System displays order summary with items and total price
+:Confirm order;
+note right : Step 5 - Customer confirms the order
+:Create order record;
+note right : Step 6 - System creates a new order record
+:Clear cart;
+note right : Step 7 - System clears the customer's cart
+:Display order confirmation;
+note right : Step 8 - System displays order confirmation to the customer
+stop
+
+@enduml
