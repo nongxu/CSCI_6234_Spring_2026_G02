@@ -41,7 +41,7 @@ class MenuItem {
 }
 
 RestaurantOwner "1" -- "1" Restaurant : owns
-Restaurant "1" *-- "1..*" MenuItem : contians
+Restaurant "1" *-- "1..*" MenuItem : contains
 
 ' Cart
 
