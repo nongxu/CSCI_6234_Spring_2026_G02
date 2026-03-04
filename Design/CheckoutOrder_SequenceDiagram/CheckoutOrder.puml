@@ -1,0 +1,51 @@
+@startuml
+skinparam dpi 300
+title Checkout Order 
+
+actor Customer as customer
+
+boundary "CartPage" as cartPage
+control "OrderController" as orderCtrl
+entity "Customer" as customerEntity
+entity "Cart" as cart 
+entity "Order" as order 
+entity "OrderItem" as orderItem
+
+customer -> cartPage : initiateCheckout()
+cartPage -> orderCtrl : verifyLoginStatus()
+orderCtrl -> customerEntity : validateCredentials()
+
+alt User not logged in 
+    customerEntity --> orderCtrl : not authenticated
+    orderCtrl --> cartPage : redirectToLoginForm()
+    cartPage --> customer : showLoginForm()
+else User logged in 
+    customerEntity --> orderCtrl : authenticated
+    orderCtrl -> cart : checkCart()
+
+    alt Cart is empty 
+        cart --> orderCtrl : cartEmpty
+        orderCtrl --> cartPage : displayEmptyCartError()
+        cartPage --> customer : showEmptyCartError()
+    else Cart has items 
+        cart --> orderCtrl : cartHasItems
+        orderCtrl -> cart : calculateTotal()
+        cart --> orderCtrl : cartTotal
+        orderCtrl -> order : getOrderSummary()
+        order --> orderCtrl : orderSummary
+        orderCtrl --> cartPage : displayOrderSummary()
+        cartPage --> customer : showOrderSummary()
+        customer -> cartPage : confirmOrder()
+        cartPage -> orderCtrl : confirmOrder()
+        orderCtrl -> order : createOrder()
+        order -> orderItem : <<create>>
+        orderItem --> order : orderItemCreated
+        order --> orderCtrl : orderCreated
+        orderCtrl -> cart : clearCart()
+        cart --> orderCtrl : cartCleared
+        orderCtrl --> cartPage : displayOrderConfirmation()
+        cartPage --> customer : showOrderConfirmation()
+    end 
+end 
+
+@enduml

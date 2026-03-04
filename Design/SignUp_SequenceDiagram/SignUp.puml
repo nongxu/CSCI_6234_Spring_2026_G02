@@ -1,0 +1,29 @@
+@startuml
+skinparam dpi 300
+title Sign up
+
+actor Customer as customer
+
+boundary "SignUpForm" as signUpForm
+control "UserController" as userCtrl 
+entity "Customer" as customerEntity
+
+customer -> signUpForm : openSignUpForm()
+signUpForm --> customer : displaySignUpForm()
+customer -> signUpForm : submitRegistration(email,password,firstName,lastName)
+signUpForm ->userCtrl : submitRegistration(email,password,firstName,lastName)
+userCtrl -> customerEntity : validateCredentials()
+
+alt Data invalid
+    customerEntity --> userCtrl : validation failed
+    userCtrl --> signUpForm : displayErrorMessage()
+    signUpForm --> customer : showError()
+else Data valid 
+    customerEntity --> userCtrl : validation passed
+    userCtrl -> customerEntity : register()
+    customerEntity --> userCtrl : accountCreated
+    userCtrl --> signUpForm : displaySuccess()
+    signUpForm --> customer : showRegistrationSuccess()
+end
+
+@enduml

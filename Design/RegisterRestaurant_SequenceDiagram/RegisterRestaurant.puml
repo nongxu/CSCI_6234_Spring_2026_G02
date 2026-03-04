@@ -1,0 +1,33 @@
+@startuml
+skinparam dpi 200
+title Register Restaurant
+
+actor "Restaurant Owner" as owner
+
+boundary "RegistrationForm" as regFrom 
+control "RestaurantController" as restaurantCtrl
+entity "RestaurantOwner" as ownerEntity
+entity "Restaurant" as restaurant 
+entity "MenuItem" as menuItem
+
+owner -> regFrom : openRegistrationForm()
+regFrom --> owner : displayRegistrationForm()
+owner -> regFrom : submitRegistration(name,address,phone,image,menuItems)
+regFrom -> restaurantCtrl : submitRegistration(name,address,phone,image,menuItems)
+restaurantCtrl -> ownerEntity : registerRestaurant()
+
+alt Fields invalid
+    ownerEntity --> restaurantCtrl : validation failed
+    restaurantCtrl --> regFrom : displayErrorMessage()
+    regFrom --> owner : showError()
+else Fields valid 
+    ownerEntity --> restaurantCtrl : validation passed
+    restaurantCtrl -> restaurant : createRestaurant(name,address,phone,image)
+    restaurant --> restaurantCtrl : restaurantCreated
+    restaurantCtrl -> menuItem : createMenuItem(name,description,price,image)
+    menuItem --> restaurantCtrl : menuItemCreated
+    restaurantCtrl --> regFrom : displayRegistrationSuccess()
+    regFrom --> owner : showRegistrationSuccess()
+end 
+
+@enduml

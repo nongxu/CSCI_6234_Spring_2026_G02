@@ -1,0 +1,33 @@
+@startuml
+skinparam dpi 300
+title Add to Cart 
+
+actor Customer as customer
+
+boundary "MenuPage" as menuPage
+control "CartController" as cartCtrl
+entity "Customer" as customerEntity
+entity "Cart" as cart 
+entity "CartItem" as cartItem 
+
+customer -> menuPage : selectMenuItem(menuItemId)
+menuPage -> cartCtrl : verifyLoginStatus()
+cartCtrl -> customerEntity : validateCredentials()
+
+alt User not logged in 
+    customerEntity --> cartCtrl : not authenticated
+    cartCtrl --> menuPage : redirectToLoginForm()
+    menuPage --> customer : showLoginForm()
+else User logged in 
+    customerEntity --> cartCtrl : authenticated
+    cartCtrl -> cart : addItem(menuItem)
+    cart -> cartItem : <<create>>
+    cartItem --> cart : cartItemCreated
+    cart --> cartCtrl : itemAdded
+    cartCtrl -> cart : calculateTotal()
+    cart --> cartCtrl : cartUpdated
+    cartCtrl --> menuPage : displayUpdatedCart()
+    menuPage --> customer : showUpdatedCart()
+end 
+
+@enduml

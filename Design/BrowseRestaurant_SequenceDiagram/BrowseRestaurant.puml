@@ -1,0 +1,25 @@
+@startuml
+skinparam dpi 300
+title Browse Restaurant
+
+actor Customer as customer
+
+boundary "RestaurantListPage" as listPage
+control "RestaurantController" as restaurantCtrl
+entity "Restaurant" as restaurant 
+
+customer -> listPage : openRestaurantListPage()
+listPage -> restaurantCtrl : getAllRestaurants()
+restaurantCtrl -> restaurant : getAllRestaurants()
+restaurant --> restaurantCtrl : restaurantList
+restaurantCtrl --> listPage : displayRestaurantList()
+listPage --> customer : showRestaurantList()
+
+customer -> listPage : selectRestaurant(restaurantId)
+listPage -> restaurantCtrl : getRestaurantMenu(restaurantId)
+restaurantCtrl -> restaurant : getMenuItems()
+restaurant --> restaurantCtrl : menuItemList
+restaurantCtrl --> listPage : displayMenu()
+listPage --> customer : showRestautantMenu()
+
+@enduml

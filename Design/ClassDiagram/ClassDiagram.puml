@@ -1,0 +1,92 @@
+@startuml
+left to right direction
+skinparam dpi 200
+title Class Diagram
+
+' User Hierarchy
+class User {
+    - userId : Long
+    - email : String
+    - password : String
+    - firstName : String 
+    - lastName : String 
+    + validateCredentials() : Boolean
+    + createSession() : void 
+}
+
+class Customer {
+    - phoneNumber : String 
+    + register() : void 
+}
+
+class RestaurantOwner {
+    - businessName : String 
+    + registerRestaurant() : void 
+}
+
+User <|-- Customer
+User <|-- RestaurantOwner
+
+' Restaurant and Menu
+class Restaurant {
+    - restaurantId : Long 
+    - name : String 
+    - address : String 
+    - phone : String 
+    - image : String 
+    + createRestaurant() : void
+    + getAllRestaurant() : List<Restaurant>
+    + getMenuItems() : List<MenuItem>
+}
+
+class MenuItem {
+    - menuItemId : Long 
+    - name : String 
+    - description : String 
+    - price : Double
+    - image : String 
+    + createdMenuItem() : void
+}
+
+RestaurantOwner "1" -- "1" Restaurant : owns
+Restaurant "1" *-- "1..*" MenuItem : contains
+
+' Cart
+class Cart {
+    - cartId : Long 
+    + addItem(menuItem : MenuItem) : void
+    + checkCart() : Boolean 
+    + calculateTotal() : Double 
+    + clearCart() : void
+}
+
+class CartItem {
+    - cartItemId : Long 
+    - qantity : Integer 
+}
+
+Customer "1" -- "1" Cart : has
+Cart "1" *-- "0..*" CartItem : contains
+CartItem "0..*" --> "1" MenuItem : references
+
+' Order
+class Order {
+    - orderId : Long 
+    - totalPrice : Double 
+    - status : String 
+    - createdAt : DataTime 
+    + createOrder() : void 
+    + getOrderSummary() : String 
+}
+
+class OrderItem {
+    - orderItemId : Long 
+    - quantity : Integer 
+    - price : Double 
+}
+
+Customer "1" -- "0..*" Order : places
+Order "1" *-- "1..*" OrderItem : contains
+OrderItem "0..*" --> "1" MenuItem : references
+
+@enduml

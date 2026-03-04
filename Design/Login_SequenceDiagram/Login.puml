@@ -1,0 +1,29 @@
+@startuml
+skinparam dpi 300
+title Login 
+
+actor Customer as customer
+
+boundary "LoginForm" as loginForm
+control "UserController" as userCtrl 
+entity "Customer" as customerEntity
+
+customer -> loginForm : openLoginForm()
+loginForm --> customer : displayLoginForm()
+customer -> loginForm : submitCredentials(email,password)
+loginForm -> userCtrl : submitCredentials(email,password)
+userCtrl -> customerEntity : validateCredentails(email,password)
+
+alt Credentials invalid
+    customerEntity --> userCtrl : validation failed
+    userCtrl --> loginForm : displayErrorMessage()
+    loginForm --> customer : showError()
+else Credentials valid 
+    customerEntity --> userCtrl : validation passed
+    userCtrl -> customerEntity : createSession()
+    customerEntity --> userCtrl : sessionCreated
+    userCtrl --> loginForm : redirecToHomePage()
+    loginForm --> customer : showHomePage() 
+end
+
+@enduml
