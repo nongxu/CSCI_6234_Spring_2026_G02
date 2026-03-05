@@ -12,7 +12,7 @@ customer -> loginForm : openLoginForm()
 loginForm --> customer : displayLoginForm()
 customer -> loginForm : submitCredentials(email,password)
 loginForm -> userCtrl : submitCredentials(email,password)
-userCtrl -> customerEntity : validateCredentails(email,password)
+userCtrl -> customerEntity : validateCredentials(email,password)
 
 alt Credentials invalid
     customerEntity --> userCtrl : validation failed
@@ -22,7 +22,7 @@ else Credentials valid
     customerEntity --> userCtrl : validation passed
     userCtrl -> customerEntity : createSession()
     customerEntity --> userCtrl : sessionCreated
-    userCtrl --> loginForm : redirecToHomePage()
+    userCtrl --> loginForm : redirectToHomePage()
     loginForm --> customer : showHomePage() 
 end
 
