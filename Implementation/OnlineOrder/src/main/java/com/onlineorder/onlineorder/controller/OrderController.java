@@ -1,6 +1,7 @@
 package com.onlineorder.onlineorder.controller;
 
 import com.onlineorder.onlineorder.entity.Order;
+import com.onlineorder.onlineorder.model.OrderSummaryResponse;
 import com.onlineorder.onlineorder.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,8 @@ public class OrderController {
             return ResponseEntity.badRequest().body("Cart is empty");
         }
         Order order = orderService.createOrder((Long) userId);
+        OrderSummaryResponse summary = orderService.getOrderSummary(order);
         orderService.clearCart((Long) userId);
-        return ResponseEntity.ok(order);
+        return ResponseEntity.ok(summary);
     }
 }

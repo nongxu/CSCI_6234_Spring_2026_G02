@@ -4,6 +4,8 @@ import com.onlineorder.onlineorder.entity.Cart;
 import com.onlineorder.onlineorder.entity.CartItem;
 import com.onlineorder.onlineorder.entity.Order;
 import com.onlineorder.onlineorder.entity.OrderItem;
+import com.onlineorder.onlineorder.model.OrderSummaryItem;
+import com.onlineorder.onlineorder.model.OrderSummaryResponse;
 import com.onlineorder.onlineorder.repository.CartItemRepository;
 import com.onlineorder.onlineorder.repository.CartRepository;
 import com.onlineorder.onlineorder.repository.MenuItemRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -70,6 +73,27 @@ public class OrderService {
         }
 
         return savedOrder;
+    }
+
+    public OrderSummaryResponse getOrderSummary(Order order) {
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getOrderId());
+
+        List<OrderSummaryItem> summaryItems = orderItems.stream()
+                .map(orderItem -> {
+                    String name = menuItemRepository.findById(orderItem.getMenuItemId())
+                            .map(menuItem -> menuItem.getName())
+                            .orElse("Unknown item");
+                    return new OrderSummaryItem(name, orderItem.getQuantity(), orderItem.getPrice());
+                })
+                .collect(Collectors.toList());
+
+        return new OrderSummaryResponse(
+                order.getOrderId(),
+                summaryItems,
+                order.getTotalPrice(),
+                order.getStatus(),
+                order.getCreatedAt()
+        );
     }
 
     public void clearCart(Long customerId) {

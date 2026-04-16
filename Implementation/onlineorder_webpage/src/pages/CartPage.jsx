@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, message, Result, Spin } from "antd";
+import { Button, Card, message, Result, Spin, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
@@ -53,19 +53,34 @@ export default function CartPage() {
     return <Spin style={{ margin: "100px auto", display: "block" }} />;
 
   if (order) {
+    const columns = [
+      { title: "Item", dataIndex: "menuItemName", key: "menuItemName" },
+      { title: "Qty", dataIndex: "quantity", key: "quantity", width: 60 },
+      { title: "Price", dataIndex: "price", key: "price", width: 80, render: (p) => `$${p.toFixed(2)}` },
+      { title: "Subtotal", key: "subtotal", width: 90, render: (_, r) => `$${(r.price * r.quantity).toFixed(2)}` },
+    ];
+
     return (
-      <div style={{ maxWidth: 400, margin: "100px auto" }}>
+      <div style={{ maxWidth: 520, margin: "80px auto" }}>
         {contextHolder}
         <Result
           status="success"
           title="Order Placed!"
-          subTitle={`Order #${order.orderId} - Total: $${order.totalPrice}`}
-          extra={
-            <Button type="primary" onClick={() => navigate("/restaurants")}>
-              Back to Restaurants
-            </Button>
-          }
+          subTitle={`Order #${order.orderId}`}
         />
+        <Table
+          dataSource={order.items}
+          columns={columns}
+          rowKey="menuItemName"
+          pagination={false}
+          size="small"
+          footer={() => <strong>Total: ${order.totalPrice.toFixed(2)}</strong>}
+        />
+        <div style={{ marginTop: 16, textAlign: "center" }}>
+          <Button type="primary" onClick={() => navigate("/restaurants")}>
+            Back to Restaurants
+          </Button>
+        </div>
       </div>
     );
   }
