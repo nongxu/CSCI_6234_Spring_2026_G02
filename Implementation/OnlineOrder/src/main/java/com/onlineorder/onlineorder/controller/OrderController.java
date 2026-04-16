@@ -18,7 +18,7 @@ public class OrderController {
     }
 
     @GetMapping("/cart/summary")
-    public ResponseEntity<?> getCartSummary(HttpSession session) {
+    public ResponseEntity<?> getOrderSummary(HttpSession session) {
         Object userId = session.getAttribute("userId");
         if (userId == null) {
             return ResponseEntity.status(401).build();

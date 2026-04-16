@@ -67,41 +67,52 @@ public class RestaurantOwnerService {
         if (body.getRestaurantName() == null || body.getRestaurantName().isBlank()) return false;
         if (body.getAddress() == null || body.getAddress().isBlank()) return false;
 
-        // Save restaurant first (without image) to obtain the generated restaurantId
-        Restaurant restaurant = new Restaurant(ownerId, body.getRestaurantName(), body.getAddress(), body.getPhone(), null);
-        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-        Long restaurantId = savedRestaurant.getRestaurantId();
+        Restaurant savedRestaurant = createRestaurant(ownerId, body, restaurantImageFile);
 
-        // Process and save the restaurant cover image
-        String restaurantImagePath = imageService.saveRestaurantImage(restaurantImageFile, restaurantId);
-        if (restaurantImagePath != null) {
-            savedRestaurant.setImage(restaurantImagePath);
-            restaurantRepository.save(savedRestaurant);
-        }
-
-        // Process and save each menu item with its optional image
         List<RegisterRestaurantBody.MenuItemBody> items = body.getMenuItems();
         if (items != null) {
             for (int i = 0; i < items.size(); i++) {
-                RegisterRestaurantBody.MenuItemBody itemBody = items.get(i);
-                MenuItem menuItem = new MenuItem(
-                        restaurantId,
-                        itemBody.getName(),
-                        itemBody.getDescription(),
-                        itemBody.getPrice(),
-                        null
-                );
-                MenuItem savedItem = menuItemRepository.save(menuItem);
-
                 MultipartFile imageFile = menuItemImageFiles != null ? menuItemImageFiles.get(i) : null;
-                String imagePath = imageService.saveMenuItemImage(imageFile, restaurantId, savedItem.getMenuItemId());
-                if (imagePath != null) {
-                    savedItem.setImage(imagePath);
-                    menuItemRepository.save(savedItem);
-                }
+                createdMenuItem(savedRestaurant.getRestaurantId(), items.get(i), imageFile);
             }
         }
 
         return true;
+    }
+
+    // Corresponds to Restaurant.createRestaurant() in the Class Diagram
+    private Restaurant createRestaurant(Long ownerId,
+                                        RegisterRestaurantBody body,
+                                        MultipartFile restaurantImageFile) throws IOException {
+        Restaurant restaurant = new Restaurant(ownerId, body.getRestaurantName(), body.getAddress(), body.getPhone(), null);
+        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+
+        String imagePath = imageService.saveRestaurantImage(restaurantImageFile, savedRestaurant.getRestaurantId());
+        if (imagePath != null) {
+            savedRestaurant.setImage(imagePath);
+            restaurantRepository.save(savedRestaurant);
+        }
+
+        return savedRestaurant;
+    }
+
+    // Corresponds to MenuItem.createdMenuItem() in the Class Diagram
+    private void createdMenuItem(Long restaurantId,
+                                 RegisterRestaurantBody.MenuItemBody itemBody,
+                                 MultipartFile imageFile) throws IOException {
+        MenuItem menuItem = new MenuItem(
+                restaurantId,
+                itemBody.getName(),
+                itemBody.getDescription(),
+                itemBody.getPrice(),
+                null
+        );
+        MenuItem savedItem = menuItemRepository.save(menuItem);
+
+        String imagePath = imageService.saveMenuItemImage(imageFile, restaurantId, savedItem.getMenuItemId());
+        if (imagePath != null) {
+            savedItem.setImage(imagePath);
+            menuItemRepository.save(savedItem);
+        }
     }
 }
