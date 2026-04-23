@@ -28,9 +28,10 @@ export default function OwnerLayout() {
   };
 
   const navItems = [
-    { key: "/owner/login",    label: "Login" },
-    { key: "/owner/signup",   label: "Sign Up" },
-    { key: "/owner/register", label: "Register Restaurant" },
+    { key: "/owner/login",      label: "Login" },
+    { key: "/owner/signup",     label: "Sign Up" },
+    { key: "/owner/register",   label: "Register Restaurant" },
+    { key: "/owner/dashboard",  label: "My Restaurants" },
   ];
 
   return (

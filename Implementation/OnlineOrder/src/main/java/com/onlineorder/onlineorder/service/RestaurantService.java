@@ -26,4 +26,8 @@ public class RestaurantService {
     public List<MenuItem> getMenuItems(Long restaurantId) {
         return menuItemRepository.findByRestaurantId(restaurantId);
     }
+
+    public List<Restaurant> getRestaurantsByOwner(Long ownerId) {
+        return restaurantRepository.findByOwnerId(ownerId);
+    }
 }

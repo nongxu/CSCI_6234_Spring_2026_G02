@@ -104,4 +104,22 @@ public class OrderService {
             cartItemRepository.deleteById(cartItem.getCartItemId());
         }
     }
+
+    public List<OrderSummaryResponse> getOrderHistory(Long customerId) {
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        return orders.stream()
+                .map(this::getOrderSummary)
+                .collect(Collectors.toList());
+    }
+
+    public boolean cancelOrder(Long orderId, Long customerId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isEmpty()) return false;
+        Order order = optionalOrder.get();
+        if (!order.getCustomerId().equals(customerId)) return false;
+        if (!"PENDING".equals(order.getStatus())) return false;
+        order.setStatus("CANCELLED");
+        orderRepository.save(order);
+        return true;
+    }
 }

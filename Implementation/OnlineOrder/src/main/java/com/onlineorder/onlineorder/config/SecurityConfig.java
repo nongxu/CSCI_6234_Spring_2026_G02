@@ -17,7 +17,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)  // disable built-in logout filter to avoid redirect interference
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signup", "/login", "/logout", "/me", "/restaurants/**", "/owner/signup", "/owner/login", "/owner/restaurant", "/cart", "/cart/summary", "/cart/confirm", "/uploads/**").permitAll()
+                .requestMatchers("/signup", "/login", "/logout", "/me", "/restaurants/**", "/owner/signup", "/owner/login", "/owner/restaurant", "/owner/restaurants", "/cart", "/cart/summary", "/cart/confirm", "/orders", "/orders/*/cancel", "/uploads/**").permitAll()
                 .anyRequest().authenticated()
             );
 

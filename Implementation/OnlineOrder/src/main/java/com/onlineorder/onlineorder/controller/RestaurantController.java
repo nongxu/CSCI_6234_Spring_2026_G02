@@ -47,6 +47,15 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.getAllRestaurants());
     }
 
+    @GetMapping("/owner/restaurants")
+    public ResponseEntity<?> getOwnerRestaurants(HttpSession session) {
+        Object ownerId = session.getAttribute("ownerId");
+        if (ownerId == null) {
+            return ResponseEntity.status(401).build();
+        }
+        return ResponseEntity.ok(restaurantService.getRestaurantsByOwner((Long) ownerId));
+    }
+
     @GetMapping("/restaurants/{restaurantId}/menu")
     public ResponseEntity<List<MenuItem>> getMenuItems(@PathVariable Long restaurantId) {
         return ResponseEntity.ok(restaurantService.getMenuItems(restaurantId));

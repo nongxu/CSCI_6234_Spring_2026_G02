@@ -30,6 +30,7 @@ export default function CustomerLayout() {
   const navItems = [
     { key: "/restaurants", label: "Restaurants" },
     { key: "/cart",        label: "Cart" },
+    { key: "/orders",      label: "My Orders" },
     { key: "/login",       label: "Login" },
     { key: "/signup",      label: "Sign Up" },
   ];
